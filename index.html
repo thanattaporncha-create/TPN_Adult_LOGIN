@@ -268,8 +268,52 @@
 </style>
 </head>
 <body class="bg-gray-50">
+  <!-- ===== หน้า LOGIN ===== -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-900 to-teal-700">
+  <div class="max-w-md w-full bg-white p-10 rounded-3xl shadow-2xl text-center">
+    <div class="inline-block p-4 rounded-2xl bg-teal-700 text-white mb-4 shadow-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+      </svg>
+    </div>
+    <h1 class="text-2xl font-black text-teal-900 mb-1 uppercase tracking-tight">TPN Calculator</h1>
+    <p class="text-sm text-gray-400 mb-6">Adult Unit | Srinagarind Hospital</p>
+    <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-widest">รหัสพนักงาน</label>
+        <input type="text" id="loginUsername" placeholder="กรอกรหัสพนักงาน" required
+          class="w-full p-4 border-2 border-teal-100 rounded-2xl focus:border-teal-500 outline-none font-bold text-center tracking-widest text-teal-700 bg-teal-50/30">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-widest">Password</label>
+        <input type="password" id="loginPassword" placeholder="Password" required
+          class="w-full p-4 border-2 border-teal-100 rounded-2xl focus:border-teal-500 outline-none font-bold text-center tracking-widest text-teal-700 bg-teal-50/30">
+      </div>
+      <p id="loginError" class="hidden text-red-500 font-bold text-sm text-center pt-1">❌ รหัสผิดพลาด กรุณาลองใหม่ค่ะ</p>
+      <button type="submit" id="loginBtn"
+        class="w-full bg-teal-700 hover:bg-teal-800 text-white p-4 rounded-2xl font-black text-lg shadow-xl transition-all mt-2">
+        เข้าสู่ระบบ 🚀
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== หน้าหลัก TPN (ซ่อนไว้ก่อน Login) ===== -->
+<div id="mainApp" class="hidden">
   <div id="app">
     <!-- Header -->
+    <div id="userBar" class="bg-teal-950 text-white px-6 py-2 no-print">
+  <div class="max-w-6xl mx-auto flex items-center justify-between text-xs">
+    <span class="text-teal-300">
+      ผู้บันทึก: 
+      <span id="displayUserName" class="font-black text-white ml-1"></span>
+    </span>
+    <button onclick="logout()" 
+      class="text-red-300 hover:text-red-100 font-bold underline transition-all">
+      Logout
+    </button>
+  </div>
+</div>
 <header class="gradient-header text-white py-4 px-6 sticky top-0 z-50 shadow-lg no-print">
   <div class="max-w-6xl mx-auto flex items-center justify-between">
     <div class="flex items-center gap-4">
@@ -1007,7 +1051,64 @@
 
 
 <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyY4bgqJ1mP_FpLFf3sQb29cLvnBFTb-5QfbYPmjmcwHVDcbBiMNw4VvQCgbQTGzuY5/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzHW45hr0FXMK5VwX4zcHp-Rw6M4e5UCwZuUAoldNI9WfWlndSk9J10HDCJ43ZsscqIwA/exec';
+  // ========== LOGIN SYSTEM ==========
+async function handleLogin(e) {
+  if (e) e.preventDefault();
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value.trim();
+  const btn = document.getElementById('loginBtn');
+  const errMsg = document.getElementById('loginError');
+
+  if (!u || !p) {
+    errMsg.textContent = "⚠️ กรุณากรอกรหัสพนักงานและ Password ค่ะ";
+    errMsg.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = "⏳ กำลังตรวจสอบ...";
+  errMsg.classList.add('hidden');
+
+  try {
+    const formData = new URLSearchParams();
+    formData.append("action", "login");
+    formData.append("username", u);
+    formData.append("password", p);
+
+    const res = await fetch(API_URL, { method: 'POST', body: formData });
+    const result = await res.json();
+
+    if (result.success) {
+      sessionStorage.setItem('tpnUser', result.name);
+      showMainApp();
+    } else {
+      errMsg.textContent = "❌ รหัสผิดพลาด กรุณาตรวจสอบอีกครั้งค่ะ";
+      errMsg.classList.remove('hidden');
+      btn.disabled = false;
+      btn.innerHTML = "เข้าสู่ระบบ 🚀";
+    }
+  } catch (err) {
+    errMsg.textContent = "❌ เชื่อมต่อไม่ได้ กรุณาลองใหม่ค่ะ";
+    errMsg.classList.remove('hidden');
+    btn.disabled = false;
+    btn.innerHTML = "เข้าสู่ระบบ 🚀";
+  }
+}
+
+function showMainApp() {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('mainApp').classList.remove('hidden');
+  const name = sessionStorage.getItem('tpnUser') || '';
+  const el = document.getElementById('displayUserName');
+  if (el) el.textContent = name;
+}
+
+function logout() {
+  sessionStorage.clear();
+  location.reload();
+}
+// ========== END LOGIN ==========
     
     let isVitalipidManual = false, isRateManual = false;
     let isPhosVolManual = false, isNaVolManual = false, isKVolManual = false;
@@ -1394,6 +1495,10 @@ function resetForm() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ✅ เพิ่มตรงนี้
+    if (sessionStorage.getItem('tpnUser')) {
+        showMainApp();
+    }
     setToday();
     // ดึงค่าเริ่มต้นให้ PN Flush เป็น 0 ตามที่ขิมต้องการ
     document.getElementById('pnFlushVolume').value = 0;
@@ -1864,5 +1969,6 @@ function calculateCaFromVol() {
   </div>
 </div>
 
+</div><!-- ปิด #mainApp -->
 </body>
 </html>
