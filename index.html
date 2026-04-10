@@ -1349,9 +1349,9 @@ function updateTable(pVol, dVol, fatVol, vitVol, phosV, pnPrepVol, hepV, bCompV,
         const naOsm = (naV * naMult) / pnPrepVol;
         const kMult = (kSource === 'KAcetate') ? 6000 : 4000;
         const kOsm = (kV * kMult) / pnPrepVol;
-        const phosMult = (phosSource === 'K2HPO4') ? 1500 : 1000;
-        const phosOsm = (phosV * phosMult) / pnPrepVol;
-        const caOsm = (caV * 430) / pnPrepVol;
+        const phosMult = (phosSource === 'K2HPO4') ? 2 : 2.7;
+const phosOsm = (phosV * phosMult * 1000) / pnPrepVol;
+const caOsm = (caV * 0.67 * 1000) / pnPrepVol;
         const mgOsm = (mgV * 4000) / pnPrepVol;
 
         document.getElementById('proteinOsmol').textContent = Math.round(pOsm);
