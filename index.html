@@ -1822,7 +1822,9 @@ async function retrieveLastOrder() {
         try {
             await fetch(`${API_URL}?${queryString}`, { method: 'GET', mode: 'no-cors' });
             alert("✅ บันทึกข้อมูลสำเร็จ");
-           window.location.href = `label_WS.html?hn=${encodeURIComponent(hn)}`;
+// แปะป้ายบอก Dashboard ว่าเราส่งข้อมูลมาจากหน้านี้แล้วนะ
+sessionStorage.setItem('tpnUser', 'authenticated'); 
+window.location.href = `label_WS.html?hn=${encodeURIComponent(hn)}`;
         } catch (e) {
             console.error(e);
             alert("❌ บันทึกไม่สำเร็จ กรุณาลองใหม่ค่ะ");
