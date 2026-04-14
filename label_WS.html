@@ -201,6 +201,11 @@
   <div id="ws-area"  class="print-area"></div>
 
 <script>
+  // ⚠️ ยามเฝ้าประตูหน้าฉลาก: เช็คว่ามีบัตรผ่านมาจากหน้าแรกหรือ Dashboard หรือยัง?
+  if (!sessionStorage.getItem('tpnUser')) {
+    alert("⚠️ กรุณาเข้าสู่ระบบก่อนนะคะ");
+    window.location.href = "index.html"; // เตะกลับหน้าแรกทันที
+  }
   // 🚩 แก้ไข URL ของ Web App ของคุณขิมที่นี่
   const API_URL = 'https://script.google.com/macros/s/AKfycbzHW45hr0FXMK5VwX4zcHp-Rw6M4e5UCwZuUAoldNI9WfWlndSk9J10HDCJ43ZsscqIwA/exec';
   let rawData = null;
