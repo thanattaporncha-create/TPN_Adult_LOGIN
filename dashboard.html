@@ -103,6 +103,11 @@
   </main>
 
   <script>
+    // ⚠️ ยามเฝ้าประตู: เช็คว่า Login หรือยัง?
+if (!sessionStorage.getItem('tpnUser')) {
+  alert("⚠️ กรุณาเข้าสู่ระบบก่อนใช้งานนะคะ");
+  window.location.href = "index.html"; // ดีดกลับหน้า Login
+}
     // ⚠️ อย่าลืมนำ API URL จาก Google Apps Script มาใส่ตรงนี้นะครับ
     const API_URL = 'https://script.google.com/macros/s/AKfycbzHW45hr0FXMK5VwX4zcHp-Rw6M4e5UCwZuUAoldNI9WfWlndSk9J10HDCJ43ZsscqIwA/exec';
     let allOrders = [];
