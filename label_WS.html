@@ -291,10 +291,10 @@ expDate.setDate(expDate.getDate() + 1);
     else if (routeDisplay.toLowerCase() === 'peripheral') routeDisplay = "P-line";
     
     // ✅ คำนวณ GIR อัตโนมัติ: (Dextrose% * RatePN) / (BW * 6)
-    const bw = parseFloat(o.bw) || 1;
-    const dexP = parseFloat(o.dextrosePercent) || 0;
-    const rate = parseFloat(o.ratePN) || 0;
-    const girCalculated = (dexP * rate) / (bw * 6);
+   const bw = parseFloat(o.bw);
+const dexP = parseFloat(o.dextrosePercent) || 0;
+const rate = parseFloat(o.ratePN) || 0;
+const girCalculated = (!bw || bw <= 0) ? "-" : ((dexP * rate) / (bw * 6)).toFixed(2);
 
     return `<div class="sticker sticker-pn" contenteditable="true">
       <div class="flex justify-between font-bold border-b-2 border-black mb-1 text-[13.5px]"><span>HN: ${o.hn} - ${o.patientName}</span><span>ขวด: ${bNum}/${div}</span></div>
@@ -322,7 +322,7 @@ expDate.setDate(expDate.getDate() + 1);
       
       <div class="flex justify-between items-end mt-0 pt-0 border-t-2 border-black">
         <div class="text-[10px] leading-tight font-bold">
-          <p>% Glucose: ${dexP} % &nbsp;&nbsp; GIR: ${girCalculated.toFixed(2)}</p>
+          <p>% Glucose: ${dexP} % &nbsp;&nbsp; GIR: ${girCalculated}</p>
           <p>Total cal: ${o.totalCalories} kcal/d</p>
           <p>Osmolarity: ${o.finalOsmolarity} mOsmol/L</p>
         </div>
