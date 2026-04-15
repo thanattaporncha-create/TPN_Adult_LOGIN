@@ -277,7 +277,8 @@
   }
 
 function createPN(o, bNum, div) {
-const expDate = new Date(); expDate.setDate(expDate.getDate() + 1);
+const expDate = new Date(o.orderDate);
+expDate.setDate(expDate.getDate() + 1);
     const proteinDisplay = o.proteinProduct === 'amiparen' ? '10% Amiparen' : '15% Aminoplasmal';
     
     // ✅ 1. เพิ่มเงื่อนไขเปลี่ยนชื่อแสดงผล (ตามที่คุณขิมต้องการ)
@@ -332,8 +333,8 @@ const expDate = new Date(); expDate.setDate(expDate.getDate() + 1);
     </div>`;
 }
 function createFat(o, fNum, div) {
-    const exp = new Date(); 
-    exp.setDate(exp.getDate() + 1);
+    const expDate = new Date(o.orderDate);
+expDate.setDate(expDate.getDate() + 1);
 
     
     // ── ชื่อผลิตภัณฑ์ Fat ──
