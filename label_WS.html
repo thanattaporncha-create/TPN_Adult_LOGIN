@@ -332,7 +332,9 @@ const expDate = new Date(); expDate.setDate(expDate.getDate() + 1);
     </div>`;
 }
 function createFat(o, fNum, div) {
-  const expDate = new Date(); expDate.setDate(expDate.getDate() + 1);
+    const exp = new Date(); 
+    exp.setDate(exp.getDate() + 1);
+
     
     // ── ชื่อผลิตภัณฑ์ Fat ──
     let fatName = o.fatProduct || "Fat Emulsion";
