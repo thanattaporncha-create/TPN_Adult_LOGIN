@@ -277,7 +277,8 @@
   }
 
 function createPN(o, bNum, div) {
-const expDate = new Date(o.orderDate);
+const baseDate = o.orderDate ? new Date(o.orderDate) : new Date();
+const expDate = new Date(baseDate);
 expDate.setDate(expDate.getDate() + 1);
     const proteinDisplay = o.proteinProduct === 'amiparen' ? '10% Amiparen' : '15% Aminoplasmal';
     
@@ -333,9 +334,9 @@ expDate.setDate(expDate.getDate() + 1);
     </div>`;
 }
 function createFat(o, fNum, div) {
-    const expDate = new Date(o.orderDate);
-expDate.setDate(expDate.getDate() + 1);
-
+    const baseDate = o.orderDate ? new Date(o.orderDate) : new Date();
+    const exp = new Date(baseDate);
+    exp.setDate(exp.getDate() + 1);
     
     // ── ชื่อผลิตภัณฑ์ Fat ──
     let fatName = o.fatProduct || "Fat Emulsion";
