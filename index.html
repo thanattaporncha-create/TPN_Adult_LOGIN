@@ -772,11 +772,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ✅ แสดง Warning ถ้า Vol เกิน 10 ml -->
-  <div id="caVolWarning" class="hidden mt-1 px-2 py-1 bg-red-100 border border-red-300 rounded-lg text-xs font-bold text-red-700 text-center">
-    ⚠️ Vol เกิน 10 ml (Max)
-  </div>
 </div>
 
   </div>
@@ -1962,18 +1957,8 @@ function printA4() {
 function calculateCaFromMmol() {
     const mmol = parseFloat(document.getElementById('calciumMmol').value) || 0;
     const caVolInput = document.getElementById('cavol');
-    const warning = document.getElementById('caVolWarning');
     
-    // Vol = mmol × 4
     let vol = roundToPlace(mmol * 4, 2);
-    
-    // แสดง Warning ถ้าเกิน 10 ml (แต่ไม่ lock ค่า ยังแก้ได้)
-    if (vol > 10 && mmol > 0) {
-        warning.classList.remove('hidden');
-    } else {
-        warning.classList.add('hidden');
-    }
-    
     caVolInput.value = vol;
     calculateAll();
 }
@@ -1981,18 +1966,8 @@ function calculateCaFromMmol() {
 // ✅ sync กลับ: ถ้าแก้ Vol เอง ให้คำนวณ mmol กลับ
 function calculateCaFromVol() {
     const vol = parseFloat(document.getElementById('cavol').value) || 0;
-    const warning = document.getElementById('caVolWarning');
-    
-    // mmol = vol / 4
     const mmol = roundToPlace(vol / 4, 2);
     document.getElementById('calciumMmol').value = mmol || '';
-    
-    // เช็ค Warning
-    if (vol > 10 && vol > 0) {
-        warning.classList.remove('hidden');
-    } else {
-        warning.classList.add('hidden');
-    }
 }
 </script>
 <div id="compatibilityModal" class="hidden fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
